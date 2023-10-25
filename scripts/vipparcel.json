@@ -1,0 +1,640 @@
+[
+  {
+    "method": "GET",
+    "url": "/shipping/label/getInfo/{id}",
+    "params": [["authToken", "string", "Authentication hash"]]
+  },
+  {
+    "method": "PUT",
+    "url": "/shipping/label/edit/{id}",
+    "params": [
+      ["authToken", "string", "Authentication hash"],
+      ["to_address", "string", "Recipient address"],
+      ["weight_lbs", "integer", "New parcel weight in lb"],
+      ["weight_oz", "integer", "New parcel weight in oz"],
+      ["length", "integer", "New parcel length in IN"],
+      ["width", "integer", "New parcel width in IN"],
+      ["height", "integer", "New parcel height in IN"]
+    ]
+  },
+  {
+    "method": "GET",
+    "url": "/shipping/label/getImages/{id}",
+    "params": [["authToken", "string", "Authentication hash"]]
+  },
+  {
+    "method": "GET",
+    "url": "/shipping/label/getList",
+    "params": [
+      [
+        "limit",
+        "integer",
+        "Default: 30\nMaximum: 150",
+        "Get number of rows in result"
+      ],
+      ["offset", "integer", "Row Offset"],
+      ["orderBy", "array"],
+      ["authToken", "string", "Authentication hash"],
+      [
+        "optionalFields",
+        "array",
+        "Available:\nsender\nrecipient",
+        "List of optional fields"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "url": "/shipping/label/mailClasses",
+    "params": [["authToken", "string", "Authentication hash"]]
+  },
+  {
+    "method": "POST",
+    "url": "/shipping/label/calculate",
+    "params": [
+      ["authToken", "string", "Authentication hash"],
+      ["labelType", "string", "international or domestic"],
+      [
+        "mailClass",
+        "string",
+        "Mail class alias\nExample:\nPriorityExpress\n\nSee: https://vipparcel.com/docs/api/#Mail Classes"
+      ],
+      ["weightOz", "integer", "Weight of the package, in ounces"],
+      [
+        "deliveryConfirmation",
+        "string",
+        "(optional)\n\nValues (domestic only):\nADULT_SIGNATURE\nSIGNATURE\nNO_SIGNATURE",
+        "Special services requested for the package"
+      ],
+      ["insuredValue", "float", "(optional)", "Insured value"],
+      ["senderPostalCode", "string", "Sender Postal Code"],
+      ["recipientPostalCode", "string", "Recipient Postal Code"],
+      ["countryId", "integer", "International only", "Country ID"],
+      [
+        "dimensionalWeight",
+        "array of links objects",
+        "Required for:\nPriority, PriorityExpress, ParcelSelect",
+        "Dimensional Weight"
+      ],
+      ["length", "float", "Length"],
+      ["height", "float", "Height"],
+      ["width", "float", "Width"]
+    ]
+  },
+  {
+    "method": "POST",
+    "url": "/shipping/label/calculateAll",
+    "params": [
+      ["authToken", "string", "Authentication hash"],
+      ["labelType", "string", "international or domestic"],
+      [
+        "mailClass",
+        "string",
+        "Mail class alias\nExample:\nPriorityExpress\n\nSee: https://vipparcel.com/docs/api/#Mail Classes"
+      ],
+      ["weightOz", "integer", "Weight of the package, in ounces"],
+      [
+        "deliveryConfirmation",
+        "string",
+        "(optional)\n\nValues (domestic only):\nADULT_SIGNATURE\nSIGNATURE\nNO_SIGNATURE",
+        "Special services requested for the package"
+      ],
+      ["insuredValue", "float", "(optional)", "Insured value"],
+      ["senderPostalCode", "string", "Sender Postal Code"],
+      ["recipientPostalCode", "string", "Recipient Postal Code"],
+      ["countryId", "integer", "International only", "Country ID"],
+      [
+        "dimensionalWeight",
+        "array of links objects",
+        "Required for:\nPriority, PriorityExpress, ParcelSelect",
+        "Dimensional Weight"
+      ],
+      ["length", "float", "Length"],
+      ["height", "float", "Height"],
+      ["width", "float", "Width"]
+    ]
+  },
+  {
+    "method": "POST",
+    "url": "/shipping/label/print",
+    "params": [
+      ["authToken", "string", "Authentication hash"],
+      ["labelType", "string", "international or domestic"],
+      [
+        "mailClass",
+        "string",
+        "Mail class alias\nExample:\nPriorityExpress\n\nSee: https://vipparcel.com/docs/api/#Mail Classes"
+      ],
+      ["weightOz", "integer", "Weight of the package, in ounces"],
+      [
+        "description",
+        "string",
+        "Required for:\nAir Post Express,\nAir Post Express Lite",
+        "Description"
+      ],
+      [
+        "deliveryConfirmation",
+        "string",
+        "(optional)\n\nValues (domestic only):\nADULT_SIGNATURE\nSIGNATURE\nNO_SIGNATURE",
+        "Special services requested for the package"
+      ],
+      [
+        "shipDate",
+        "string",
+        "(optional)",
+        "Ship Date (example format 12/18/2019)"
+      ],
+      ["is_apo_fpo", "boolean", "Required for APO/FPO", "Use military address"],
+      [
+        "military_state",
+        "string",
+        "Required for APO/FPO",
+        "Military state (example: Armed Forces Europe)"
+      ],
+      [
+        "type_of_service",
+        "string",
+        "Required for APO/FPO",
+        "Military service type (APO or FPO)"
+      ],
+      ["sender", "array of links objects", "Sender"],
+      ["streetAddress", "string", "Max length 188 chars", "Street Address"],
+      [
+        "city",
+        "string",
+        "Max length 50 chars\n\nAllowed:\nA-Z, a-z, hyphen, period, space",
+        "Sender city"
+      ],
+      ["firstName", "string", "Max length 24 chars", "Sender name"],
+      ["lastName", "array", "Max length 24 chars", "Sender name"],
+      [
+        "phone",
+        "string",
+        "10 digits required\nUse format: 2125551234",
+        "Phone number of sender"
+      ],
+      [
+        "postalCode",
+        "string",
+        "The format is either ZIP5 only or ZIP+4 for US addresses.\nEx.: 12345 or 12345-1234",
+        "Postal Code"
+      ],
+      [
+        "state",
+        "string",
+        "This element must contain a valid 2-character state code",
+        "Recipient state"
+      ],
+      [
+        "email",
+        "string",
+        "Max length 64 chars\n\n(optional)",
+        "Email address of sender"
+      ],
+      [
+        "company",
+        "string",
+        "Domestic only\nMax length 47 chars\n\n(optional)",
+        "Sender company name"
+      ],
+      ["originZipCode", "integer", "(optional)", "if other than Zip Code"],
+      ["recipient", "array of links objects", "Recipient"],
+      ["countryId", "integer", "International only", "Country"],
+      ["city", "string", "Max length 50 chars", "City"],
+      ["firstName", "string", "Max length 24 chars", "First Name"],
+      ["lastName", "string", "Max length 24 chars", "Last Name"],
+      [
+        "postalCode",
+        "string",
+        "For Domestic Mail, the format is ZIP5\nMax length 15 chars for International Mail",
+        "Recipient postal code"
+      ],
+      ["zip4", "string", "Domestic only", "+4 add-on for US addresses"],
+      ["state", "string", "Domestic only\nLength of 2 characters"],
+      [
+        "province",
+        "string",
+        "International only\nMax length 25 chars\n\n(optional)",
+        "Province"
+      ],
+      [
+        "phone",
+        "string",
+        "Domestic\nMax length 10 chars\n\nInternational\nMax length 30 chars\n\nRequired for:\nAir Post Express,\nAir Post Express Lite",
+        "Phone Number"
+      ],
+      [
+        "email",
+        "string",
+        "Max length 64 chars\n\nRequired for:\nAir Post Express,\nAir Post Express Lite",
+        "Email"
+      ],
+      ["company", "string", "Domestic only\n\n(optional)", "Company"],
+      [
+        "streetAddress",
+        "string",
+        "1-2 Line\n\nInternational:\nMaximum 41 characters per line\n\n\\n delim.",
+        "Street Address Line 1-2"
+      ],
+      ["insuredValue", "float", "(optional)", "Insured value"],
+      ["customsInfo", "object", "International only", "Customs Declaration"],
+      [
+        "eelPfc",
+        "string",
+        "(optional)",
+        "Exemption or Exclusion Legend\n(EEL) or a Proof of Filing Citation\n(PFC).\n\nRequired for shipments to\nan international destination or to\nan overseas U.S. Territory."
+      ],
+      [
+        "contentsExplanation",
+        "string",
+        "Required if category is Other",
+        "Explanation of the customs items"
+      ],
+      [
+        "category",
+        "string",
+        "Category List:\nDocuments\nGift\nMerchandise\nOther\nReturnedGoods\nSample\nHumanitarianDonation\nDangerousGoods",
+        "Category of the customs items"
+      ],
+      ["taxId", "string", "(optional)", "Tax Id"],
+      [
+        "customsItem",
+        "array of links objects",
+        "International only\nMaximum 30 items"
+      ],
+      [
+        "quantity",
+        "integer",
+        "Must be greater than zero",
+        "Quantity of the customs item"
+      ],
+      [
+        "value",
+        "float",
+        "Must be greater than zero",
+        "Value of the customs item"
+      ],
+      [
+        "weightOz",
+        "integer",
+        "Must be specified whole ounces and greater than zero and cannot exceed 1120 ounces (70 pounds)",
+        "Weight of the customs item"
+      ],
+      [
+        "description",
+        "string",
+        "Max length 50 chars",
+        "Description of the customs item"
+      ],
+      ["countryId", "integer", "(optional)", "Country of origin"],
+      ["HSTariffNumber", "string", "(optional)", "HS Tariff Number"],
+      [
+        "dimensionalWeight",
+        "array of links objects",
+        "Required for:\nPriority, PriorityExpress, ParcelSelect",
+        "Dimensional Weight"
+      ],
+      ["length", "float", "Length"],
+      ["height", "float", "Height"],
+      ["width", "float", "Width"],
+      [
+        "rubberStamp1",
+        "string",
+        "Max length 50 chars",
+        "User-supplied text to print on the\nlabel"
+      ],
+      [
+        "rubberStamp2",
+        "string",
+        "Max length 50 chars",
+        "User-supplied text to print on the\nlabel"
+      ],
+      [
+        "rubberStamp3",
+        "string",
+        "Max length 50 chars",
+        "User-supplied text to print on the\nlabel"
+      ],
+      [
+        "imageFormat",
+        "string",
+        "(optional)\nDefault: png",
+        "Available:\nEPL2\nZPLII\nPDF"
+      ],
+      ["imageResolution", "string", "(optional)\nDefault: 300", "203\n300"],
+      ["validationAddress", "boolean", "(optional)", "Default: true"],
+      [
+        "reference",
+        "string",
+        "(optional)",
+        "An optional field that may be used for Importer's references such as a Tax ID, etc."
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "url": "/shipping/pickup/getInfo/{id}",
+    "params": [["authToken", "string", "Authentication hash"]]
+  },
+  {
+    "method": "GET",
+    "url": "/shipping/pickup/getLabels",
+    "params": [
+      [
+        "limit",
+        "integer",
+        "Default: 30\nMaximum: 150",
+        "Get number of rows in result"
+      ],
+      ["offset", "integer", "Row Offset"],
+      ["orderBy", "array"],
+      ["authToken", "string", "Authentication hash"]
+    ]
+  },
+  {
+    "method": "GET",
+    "url": "/shipping/pickup/getList",
+    "params": [
+      [
+        "limit",
+        "integer",
+        "Default: 30\nMaximum: 150",
+        "Get number of rows in result"
+      ],
+      ["offset", "integer", "Row Offset"],
+      ["orderBy", "array"],
+      ["authToken", "string", "Authentication hash"]
+    ]
+  },
+  {
+    "method": "POST",
+    "url": "/shipping/pickup/request",
+    "params": [
+      ["authToken", "string", "Authentication hash"],
+      ["address", "array of links objects", "Pickup Address"],
+      [
+        "firstName",
+        "string",
+        "Max length 100 chars",
+        "First name on the pickup"
+      ],
+      ["lastName", "string", "Max length 100 chars", "Last name on the pickup"],
+      [
+        "state",
+        "string",
+        "This element must contain a valid 2-character state code",
+        "State abbreviation of the pickup"
+      ],
+      ["city", "string", "Max length 100 chars", "City of the pickup"],
+      ["zip5", "string", "Five digit ZIP Code of the pickup"],
+      ["zip4", "string", "(optional)", "+4 ZIP Code for the pickup"],
+      ["phone", "string", "Length 10 chars", "Phone number of the pickup"],
+      ["address", "string", "Max length 100 chars", "Address of the pickup"],
+      ["packages", "array", "Tracking Number list"],
+      [
+        "packageLocation",
+        "string",
+        "Length 2 chars",
+        "Keys:\n\nsd : Side Door\nkd : Knock on Door/Ring Bell\nmr : Mail Room\nof : Office\nrc : Reception\nim : In/At Mailbox\not : Other\nfd : Front Door\nbd : Back Door"
+      ],
+      [
+        "specialInstructions",
+        "string",
+        "Required if \"ot\" (Other) is chosen for packageLocation",
+        "Special Instructions for pickup"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "url": "/shipping/tracking/getInfo",
+    "params": [
+      ["authToken", "string", "Authentication hash"],
+      ["trackNumber", "string", "Track Number"]
+    ]
+  },
+  {
+    "method": "GET",
+    "url": "/shipping/refund/getInfo/{id}",
+    "params": [["authToken", "string", "Authentication hash"]]
+  },
+  {
+    "method": "GET",
+    "url": "/shipping/refund/getLabels",
+    "params": [
+      [
+        "limit",
+        "integer",
+        "Default: 30\nMaximum: 150",
+        "Get number of rows in result"
+      ],
+      ["offset", "integer", "Row Offset"],
+      ["orderBy", "array"],
+      ["authToken", "string", "Authentication hash"]
+    ]
+  },
+  {
+    "method": "GET",
+    "url": "/shipping/refund/getList",
+    "params": [
+      [
+        "limit",
+        "integer",
+        "Default: 30\nMaximum: 150",
+        "Get number of rows in result"
+      ],
+      ["offset", "integer", "Row Offset"],
+      ["orderBy", "array"],
+      ["authToken", "string", "Authentication hash"]
+    ]
+  },
+  {
+    "method": "POST",
+    "url": "/shipping/refund/request",
+    "params": [
+      ["authToken", "string", "Authentication hash"],
+      [
+        "refundLabels",
+        "array",
+        "List of refundable label IDs",
+        "Labels can be refunded not later than 10 days from the date of the purchase"
+      ],
+      ["reason", "string", "Reason for refund"]
+    ]
+  },
+  {
+    "method": "POST",
+    "url": "/shipping/scanForm/create",
+    "params": [
+      ["authToken", "string", "Authentication hash"],
+      ["labels", "array"],
+      ["address", "array of links objects"],
+      ["firstName", "string"],
+      ["lastName", "string"],
+      ["city", "string"],
+      ["state", "string"],
+      ["postalCode", "string"],
+      ["address", "string"]
+    ]
+  },
+  {
+    "method": "GET",
+    "url": "/shipping/scanForm/getLabels",
+    "params": [["authToken", "string", "Authentication hash"]]
+  },
+  {
+    "method": "GET",
+    "url": "/shipping/scanForm/getInfo/{id}",
+    "params": [["authToken", "string", "Authentication hash"]]
+  },
+  {
+    "method": "GET",
+    "url": "/shipping/scanForm/getList",
+    "params": [["authToken", "string", "Authentication hash"]]
+  },
+  {
+    "method": "GET",
+    "url": "/account/balance/getHistory",
+    "params": [
+      [
+        "limit",
+        "integer",
+        "Default: 30\nMaximum: 150",
+        "Get number of rows in result"
+      ],
+      ["offset", "integer", "Row Offset"],
+      ["orderBy", "array"],
+      ["authToken", "string", "Authentication hash"]
+    ]
+  },
+  {
+    "method": "GET",
+    "url": "/account/balance/getCurrent",
+    "params": [["authToken", "string", "Authentication hash"]]
+  },
+  {
+    "method": "GET",
+    "url": "/account/address/getInfo/{id}",
+    "params": [["authToken", "string", "Authentication hash"]]
+  },
+  {
+    "method": "GET",
+    "url": "/account/address/getList",
+    "params": [
+      [
+        "limit",
+        "integer",
+        "Default: 30\nMaximum: 150",
+        "Get number of rows in result"
+      ],
+      ["offset", "integer", "Row Offset"],
+      ["orderBy", "array"],
+      ["authToken", "string", "Authentication hash"]
+    ]
+  },
+  {
+    "method": "POST",
+    "url": "/account/address/create",
+    "params": [
+      ["addressType", "string", "sender or recipient", "Address type"],
+      ["firstName", "string", "First Name"],
+      ["lastName", "string", "Last Name"],
+      ["company_name", "string", "Company Name"],
+      [
+        "state",
+        "string",
+        "This element must contain a valid 2-character state code",
+        "State Code"
+      ],
+      ["city", "string", "City"],
+      ["postalCode", "string", "Format: 12345 or 12345-1234", "Postal Code"],
+      ["address", "string", "Address"],
+      ["phone", "string", "Maximum length of 10 characters", "Phone Number"],
+      ["email", "string", "Email"],
+      [
+        "locationType",
+        "string",
+        "domestic or international",
+        "Applicable only for recipient address"
+      ],
+      ["countryId", "integer", "Applicable only for recipient address (To)"],
+      ["authToken", "string", "Authentication hash"]
+    ]
+  },
+  {
+    "method": "DELETE",
+    "url": "/account/address/delete/{id}",
+    "params": [["authToken", "string", "Authentication hash"]]
+  },
+  {
+    "method": "PUT",
+    "url": "/account/address/update/{id}",
+    "params": [
+      ["addressType", "string", "sender or recipient", "Address type"],
+      ["firstName", "string", "First Name"],
+      ["company_name", "string", "Company Name"],
+      ["lastName", "string", "Last Name"],
+      [
+        "state",
+        "string",
+        "This element must contain a valid 2-character state code",
+        "State Code"
+      ],
+      ["city", "string", "City"],
+      ["postalCode", "string", "Format: 12345 or 12345-1234", "Postal Code"],
+      ["address", "string", "Address"],
+      ["phone", "string", "Maximum length of 10 characters", "Phone Number"],
+      ["email", "string", "Email"],
+      [
+        "locationType",
+        "string",
+        "domestic or international",
+        "Applicable only for recipient address"
+      ],
+      ["countryId", "integer", "Applicable only for recipient address (To)"],
+      ["authToken", "string", "Authentication hash"]
+    ]
+  },
+  {
+    "method": "GET",
+    "url": "/account/personalInfo/details",
+    "params": [["authToken", "string", "Authentication hash"]]
+  },
+  {
+    "method": "PUT",
+    "url": "/account/personalInfo/update",
+    "params": [
+      ["firstName", "string", "First Name"],
+      ["lastName", "string", "Last Name"],
+      [
+        "state",
+        "string",
+        "This element must contain a valid 2-character state code",
+        "State Code"
+      ],
+      ["city", "string", "City"],
+      ["postalCode", "string", "Format: 12345 or 12345-1234", "Postal Code"],
+      ["streetAddress1", "string"],
+      ["streetAddress2", "string"],
+      ["driverLicence", "string"]
+    ]
+  },
+  {
+    "method": "GET",
+    "url": "/location/country/getList",
+    "params": [["authToken", "string", "Authentication hash"]]
+  },
+  {
+    "method": "GET",
+    "url": "/location/state/getList",
+    "params": [
+      ["authToken", "string", "Authentication hash"],
+      [
+        "military",
+        "boolean",
+        "(optional)",
+        "Include military states\nDefault: false"
+      ]
+    ]
+  }
+]

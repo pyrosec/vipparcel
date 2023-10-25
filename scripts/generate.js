@@ -27,7 +27,7 @@ const toType = (v) => {
     let param = v.url.match(/(?:\{\w+\})/g);
     let uri = v.url;
     if (param) {
-      param = param[0].substr(1, param.length - 2);
+      param = param[0].substr(1, param[0].length - 2);
       const s = v.url.split('/');
       uri = s.slice(0, -1).join('/');
     } else uri = v.url;
@@ -39,7 +39,7 @@ const toType = (v) => {
     console.log('}) {');
     console.log('  const body = { ...o };');
     if (param) console.log('  delete body[' + param + '];');
-    console.log('  return await this._call("' + uri + (param ? `+ "/" + o.${param}` : "") + '", { method: "' + v.method + '"' + (v.method !== 'GET' ? ', body: JSON.stringify(body)' : '') + ' });');
+    console.log('  return await this._call("' + uri + (param ? `/" + o[${param}]` : "\"") + ', { method: "' + v.method + '"' + (v.method !== 'GET' ? ', body: JSON.stringify(body)' : '') + ' });');
     console.log('}');
   });
 })().catch((err) => console.error(err));

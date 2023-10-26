@@ -4,6 +4,12 @@
   "description": "vipparcel API client",
   "main": "ilb/index.js",
   "repository": "https://github.com/pyrosec/vipparcel",
+  "scripts": {
+    "build": "tsc"
+  },
+  "bin": {
+    "vipparcel": "./bin/vipparcel.js"
+  },
   "author": "pyrosec",
   "license": "MIT",
   "private": false,
@@ -13,9 +19,16 @@
   },
   "dependencies": {
     "change-case": "^4.1.2",
+    "form-data": "^4.0.0",
     "fs-extra": "^11.1.1",
+    "http-proxy-agent": "^7.0.0",
+    "https-proxy-agent": "^7.0.2",
+    "lodash": "^4.17.21",
     "mkdirp": "^3.0.1",
+    "node-fetch": "2",
     "setimmediate": "^1.0.5",
+    "socks-proxy-agent": "^8.0.2",
+    "winston": "^3.11.0",
     "yargs": "^17.7.2"
   }
 }

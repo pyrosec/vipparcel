@@ -1,13 +1,14 @@
-import { VIPParcel } from "./vipparcel";
+import { VIPParcel, objectToProxyString } from "./vipparcel";
 import yargs from "yargs";
 import { camelCase } from "change-case";
 import fs from "fs-extra";
 import util from "util";
 import url from "url";
 import "setimmediate";
-import mkdirp from "mkdirp"
+import { mkdirp } from "mkdirp"
 import path from "path";
 import { getLogger } from "./logger";
+import { HttpProxyAgent } from "http-proxy-agent";
 
 const logger = getLogger();
 
@@ -21,7 +22,8 @@ export async function saveSession(vipparcel, json = false, filename = 'session.j
 
 export async function initSession() {
   const proxyOptions = await loadProxy();
-  const vipparcel = await VIPParcel.initialize({ proxyOptions });
+  const vipparcel = new VIPParcel();
+  vipparcel.proxyOptions = proxyOptions;
   await saveSession(vipparcel);
 }
 
@@ -32,7 +34,7 @@ export async function loadSession() {
   return vipparcel;
 }
 
-const proxyStringToObject = (proxyUri: string) => {
+export const proxyStringToObject = (proxyUri: string) => {
   const parsed = url.parse(proxyUri);
   const [ username, ...passwordParts ] = (parsed.auth || '').split(':')
   return {
@@ -42,11 +44,6 @@ const proxyStringToObject = (proxyUri: string) => {
     password: passwordParts.join(':') || null
   };
 };
-
-const objectToProxyString = (o: any) => {
-  return 'socks5://' + (o.userId ? o.userId + ':' + o.password + '@' : '') + o.hostname + (o.port ? ':' + o.port : '');
-};
-
 
 export async function setProxy(proxyUri: string) {
   await mkdirp(path.join(process.env.HOME, '.vipparcel'));
@@ -65,7 +62,7 @@ export async function unsetProxy() {
 export async function loadProxy() {
   await mkdirp(path.join(process.env.HOME, '.vipparcel'));
   try {
-    return proxyStringToObject(await fs.readFile(path.join(process.env.HOME, '.vipparcel', 'proxy'), 'utf8'));
+    return await fs.readFile(path.join(process.env.HOME, '.vipparcel', 'proxy'), 'utf8');
   } catch (e) {
     return null;
   }
@@ -130,6 +127,7 @@ export async function runCLI() {
     r[camelCase(k)] = String(v);
     return r;
   }, {}));
+  if (data.address && data.address.indexOf(',') !== -1) data.address = data.address.split(',');
   switch (command) {
     case 'init':
       return await initSession();

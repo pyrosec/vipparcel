@@ -17,21 +17,18 @@ export declare class VIPParcel {
     ipinfo(): Promise<any>;
     shippingLabelGetInfo(o: {
         id: string;
-        authToken: string;
     }): Promise<any>;
     shippingLabelEdit(o: {
         id: string;
-        authToken: string;
-        to_address: string;
-        weight_lbs: number;
-        weight_oz: number;
+        toAddress: string;
+        weightLbs: number;
+        weightOz: number;
         length: number;
         width: number;
         height: number;
     }): Promise<any>;
     shippingLabelGetImages(o: {
         id: string;
-        authToken: string;
     }): Promise<any>;
     shippingLabelGetList(o: {
         limit: number;
@@ -40,11 +37,8 @@ export declare class VIPParcel {
         authToken: string;
         optionalFields: string[];
     }): Promise<any>;
-    shippingLabelMailClasses(o: {
-        authToken: string;
-    }): Promise<any>;
+    shippingLabelMailClasses(o: any): Promise<any>;
     shippingLabelCalculate(o: {
-        authToken: string;
         labelType: string;
         mailClass: string;
         weightOz: number;
@@ -53,7 +47,6 @@ export declare class VIPParcel {
         senderPostalCode: string;
         recipientPostalCode: string;
         countryId: number;
-        dimensionalWeight: any[];
         length: number;
         height: number;
         width: number;
@@ -68,7 +61,6 @@ export declare class VIPParcel {
         senderPostalCode: string;
         recipientPostalCode: string;
         countryId: number;
-        dimensionalWeight: any[];
         length: number;
         height: number;
         width: number;
@@ -124,22 +116,18 @@ export declare class VIPParcel {
     }): Promise<any>;
     shippingPickupGetInfo(o: {
         id: string;
-        authToken: string;
     }): Promise<any>;
     shippingPickupGetLabels(o: {
         limit: number;
         offset: number;
         orderBy: string[];
-        authToken: string;
     }): Promise<any>;
     shippingPickupGetList(o: {
         limit: number;
         offset: number;
         orderBy: string[];
-        authToken: string;
     }): Promise<any>;
     shippingPickupRequest(o: {
-        authToken: string;
         address: any;
         firstName: string;
         lastName: string;
@@ -153,32 +141,26 @@ export declare class VIPParcel {
         specialInstructions: string;
     }): Promise<any>;
     shippingTrackingGetInfo(o: {
-        authToken: string;
         trackNumber: string;
     }): Promise<any>;
     shippingRefundGetInfo(o: {
         id: string;
-        authToken: string;
     }): Promise<any>;
     shippingRefundGetLabels(o: {
         limit: number;
         offset: number;
         orderBy: string[];
-        authToken: string;
     }): Promise<any>;
     shippingRefundGetList(o: {
         limit: number;
         offset: number;
         orderBy: string[];
-        authToken: string;
     }): Promise<any>;
     shippingRefundRequest(o: {
-        authToken: string;
-        refundLabels: string[] | string;
+        refundLabels: string[];
         reason: string;
     }): Promise<any>;
     shippingScanFormCreate(o: {
-        authToken: string;
         labels: string[];
         address: any;
         firstName: string;
@@ -187,34 +169,25 @@ export declare class VIPParcel {
         state: string;
         postalCode: string;
     }): Promise<any>;
-    shippingScanFormGetLabels(o: {
-        authToken: string;
-    }): Promise<any>;
+    shippingScanFormGetLabels(o: any): Promise<any>;
     shippingScanFormGetInfo(o: {
         id: string;
-        authToken: string;
     }): Promise<any>;
-    shippingScanFormGetList(o: {
-        authToken: string;
-    }): Promise<any>;
+    shippingScanFormGetList(o: any): Promise<any>;
     accountBalanceGetHistory(o: {
         limit: number;
         offset: number;
         orderBy: string[];
         authToken: string;
     }): Promise<any>;
-    accountBalanceGetCurrent(o: {
-        authToken: string;
-    }): Promise<any>;
+    accountBalanceGetCurrent(o: any): Promise<any>;
     accountAddressGetInfo(o: {
         id: string;
-        authToken: string;
     }): Promise<any>;
     accountAddressGetList(o: {
         limit: number;
         offset: number;
         orderBy: string[];
-        authToken: string;
     }): Promise<any>;
     accountAddressCreate(o: {
         addressType: string;
@@ -233,7 +206,6 @@ export declare class VIPParcel {
     }): Promise<any>;
     accountAddressDelete(o: {
         id: string;
-        authToken: string;
     }): Promise<any>;
     accountAddressUpdate(o: {
         id: string;
@@ -251,9 +223,7 @@ export declare class VIPParcel {
         countryId: number;
         authToken: string;
     }): Promise<any>;
-    accountPersonalInfoDetails(o: {
-        authToken: string;
-    }): Promise<any>;
+    accountPersonalInfoDetails(o: any): Promise<any>;
     accountPersonalInfoUpdate(o: {
         firstName: string;
         lastName: string;
@@ -264,11 +234,8 @@ export declare class VIPParcel {
         streetAddress2: string;
         driverLicence: string;
     }): Promise<any>;
-    locationCountryGetList(o: {
-        authToken: string;
-    }): Promise<any>;
+    locationCountryGetList(o: any): Promise<any>;
     locationStateGetList(o: {
-        authToken: string;
         military: boolean;
     }): Promise<any>;
 }

@@ -174,7 +174,7 @@ export declare class VIPParcel {
     }): Promise<any>;
     shippingRefundRequest(o: {
         authToken: string;
-        refundLabels: string[];
+        refundLabels: string[] | string;
         reason: string;
     }): Promise<any>;
     shippingScanFormCreate(o: {

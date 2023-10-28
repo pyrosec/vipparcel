@@ -39,8 +39,10 @@ export class VIPParcel {
   async _call(uri, config) {
     const body = JSON.parse(config.body || "{}");
     const entries = Object.entries(body);
-    if (config.method === 'GET')
-      uri += "?" + qs.stringify({ authToken: this.authToken });
+    if (config.method === 'GET') {
+      uri += "?" + qs.stringify({ ...body, authToken: this.authToken });
+      delete config.body;
+    }
     else {
       body.authToken = this.authToken;
       config.body = new URLSearchParams(body);
@@ -204,7 +206,7 @@ export class VIPParcel {
       'sender[streetAddress]': o.senderStreetAddress,
       'sender[city]': o.senderCity,
       'sender[firstName]': o.senderFirstName,
-      'sender[lastName]': o.senderLastName,
+      'sender[lastName][0]': o.senderLastName,
       'sender[phone]': o.senderPhone,
       'sender[postalCode]': o.senderPostalCode,
       'sender[state]': o.senderState,
@@ -212,21 +214,21 @@ export class VIPParcel {
       'sender[company]': o.senderCompany,
       'sender[originZipCode]': o.senderOriginZipCode,
       'recipient[countryId]': o.recipientCountryId,
+      'recipient[postalCode]': o.recipientPostalCode,
+      'recipient[state]': o.recipientState,
       'recipient[city]': o.recipientCity,
       'recipient[firstName]': o.recipientFirstName,
       'recipient[lastName]': o.recipientLastName,
-      'recipient[postalCode]': o.recipientPostalCode,
       'recipient[zip4]': o.recipientZip4,
-      'recipient[state]': o.recipientState,
       'recipient[province]': o.recipientProvince,
       'recipient[phone]': o.recipientPhone,
       'recipient[email]': o.recipientEmail,
       'recipient[company]': o.recipientCompany,
       'recipient[streetAddress]': o.recipientStreetAddress,
       insuredValue: o.insuredValue,
-      'dimensionalInfo[height]': Number(o.height),
-      'dimensionalInfo[length]': Number(o.length),
-      'dimensionalInfo[width]': Number(o.width),
+      'dimensionalWeight[height]': Number(o.height),
+      'dimensionalWeight[length]': Number(o.length),
+      'dimensionalWeight[width]': Number(o.width),
       rubberStamp1: o.rubberStamp1,
       rubberStamp2: o.rubberStamp2,
       rubberStamp3: o.rubberStamp3,
@@ -235,6 +237,7 @@ export class VIPParcel {
       validationAddress: o.validationAddress,
       reference: o.reference
     };
+    console.log(require('util').inspect(body, { colors: true, depth: 15 }));
     return await this._call("/shipping/label/print", {
       method: "POST",
       body: JSON.stringify(body),
@@ -286,8 +289,8 @@ export class VIPParcel {
     });
   }
   async shippingTrackingGetInfo(o: { authToken: string; trackNumber: string }) {
-    const body = { ...o };
-    return await this._call("/shipping/tracking/getInfo", { method: "GET" });
+    const body = { trackNumber: o.trackNumber };
+    return await this._call("/shipping/tracking/getInfo", { method: "GET", body: JSON.stringify(body) });
   }
   async shippingRefundGetInfo(o: { id: string; authToken: string }) {
     const body = { ...o };
@@ -316,10 +319,14 @@ export class VIPParcel {
   }
   async shippingRefundRequest(o: {
     authToken: string;
-    refundLabels: string[];
+    refundLabels: string[] | string;
     reason: string;
   }) {
-    const body = { ...o };
+    if (typeof o.refundLabels === 'string') o.refundLabels = o.refundLabels.split(',');
+    const body = { reason: o.reason };
+    o.refundLabels.forEach((v, i) => {
+      body['refundLabels[' + String(i) + ']'] = v;
+    });
     return await this._call("/shipping/refund/request", {
       method: "POST",
       body: JSON.stringify(body),

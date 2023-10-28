@@ -53,35 +53,29 @@ export class VIPParcel {
     return await (await fetch(uri, config)).json();
   }
   async ipinfo() {
-    return await (await fetch('https://ipinfo.io/json', { agent: this._makeAgent(), method: 'GET' })).text();
+    return await (await fetch('https://ipinfo.io/json', { agent: this._makeAgent(), method: 'GET' })).json();
   }
-  async shippingLabelGetInfo(o: { id: string; authToken: string }) {
-    const body = { ...o };
-    delete body.id;
+  async shippingLabelGetInfo(o: { id: string; }) {
     return await this._call("/shipping/label/getInfo/" + o.id, {
       method: "GET",
     });
   }
   async shippingLabelEdit(o: {
     id: string;
-    authToken: string;
-    to_address: string;
-    weight_lbs: number;
-    weight_oz: number;
+    toAddress: string;
+    weightLbs: number;
+    weightOz: number;
     length: number;
     width: number;
     height: number;
   }) {
-    const body = { ...o };
-    delete body.id;
+    const body = { to_address: o.toAddress, weight_lbs: o.weightLbs, weight_oz: o.weightOz, length: o.length, width: o.width, height: o.height };
     return await this._call("/shipping/label/edit/" + o.id, {
       method: "PUT",
       body: JSON.stringify(body),
     });
   }
-  async shippingLabelGetImages(o: { id: string; authToken: string }) {
-    const body = { ...o };
-    delete body.id;
+  async shippingLabelGetImages(o: { id: string; }) {
     return await this._call("/shipping/label/getImages/" + o.id, {
       method: "GET",
     });
@@ -93,15 +87,12 @@ export class VIPParcel {
     authToken: string;
     optionalFields: string[];
   }) {
-    const body = { ...o };
-    return await this._call("/shipping/label/getList", { method: "GET" });
+    return await this._call("/shipping/label/getList", { method: "GET", body: JSON.stringify(o)});
   }
-  async shippingLabelMailClasses(o: { authToken: string }) {
-    const body = { ...o };
+  async shippingLabelMailClasses(o: any) {
     return await this._call("/shipping/label/mailClasses", { method: "GET" });
   }
   async shippingLabelCalculate(o: {
-    authToken: string;
     labelType: string;
     mailClass: string;
     weightOz: number;
@@ -110,12 +101,11 @@ export class VIPParcel {
     senderPostalCode: string;
     recipientPostalCode: string;
     countryId: number;
-    dimensionalWeight: any[];
     length: number;
     height: number;
     width: number;
   }) {
-    const body = { ...o };
+    const body = { labelType: o.labelType, mailClass: o.mailClass, weightOz: o.weightOz, deliveryConfirmation: o.deliveryConfirmation, insuredValue: o.insuredValue, senderPostalCode: o.senderPostalCode, recipientPostalCode: o.recipientPostalCode, countryId: o.countryId, 'dimensionalWeight[length]': o.length, 'dimensionalWeight[height]': o.height, 'dimensionalWeight[width]': o.width };
     return await this._call("/shipping/label/calculate", {
       method: "POST",
       body: JSON.stringify(body),
@@ -131,12 +121,11 @@ export class VIPParcel {
     senderPostalCode: string;
     recipientPostalCode: string;
     countryId: number;
-    dimensionalWeight: any[];
     length: number;
     height: number;
     width: number;
   }) {
-    const body = { ...o };
+    const body = { labelType: o.labelType, mailClass: o.mailClass, weightOz: o.weightOz, deliveryConfirmation: o.deliveryConfirmation, insuredValue: o.insuredValue, senderPostalCode: o.senderPostalCode, recipientPostalCode: o.recipientPostalCode, countryId: o.countryId, 'dimensionalWeight[length]': o.length, 'dimensionalWeight[height]': o.height, 'dimensionalWeight[width]': o.width };
     return await this._call("/shipping/label/calculateAll", {
       method: "POST",
       body: JSON.stringify(body),
@@ -240,9 +229,7 @@ export class VIPParcel {
       body: JSON.stringify(body),
     });
   }
-  async shippingPickupGetInfo(o: { id: string; authToken: string }) {
-    const body = { ...o };
-    delete body.id;
+  async shippingPickupGetInfo(o: { id: string; }) {
     return await this._call("/shipping/pickup/getInfo/" + o.id, {
       method: "GET",
     });
@@ -251,22 +238,19 @@ export class VIPParcel {
     limit: number;
     offset: number;
     orderBy: string[];
-    authToken: string;
   }) {
     const body = { ...o };
-    return await this._call("/shipping/pickup/getLabels", { method: "GET" });
+    return await this._call("/shipping/pickup/getLabels", { method: "GET", body: JSON.stringify(body) });
   }
   async shippingPickupGetList(o: {
     limit: number;
     offset: number;
     orderBy: string[];
-    authToken: string;
   }) {
     const body = { ...o };
-    return await this._call("/shipping/pickup/getList", { method: "GET" });
+    return await this._call("/shipping/pickup/getList", { method: "GET", body: JSON.stringify(body) });
   }
   async shippingPickupRequest(o: {
-    authToken: string;
     address: any;
     firstName: string;
     lastName: string;
@@ -280,18 +264,21 @@ export class VIPParcel {
     specialInstructions: string;
   }) {
     const body = { ...o };
+    const packages = body.packages;
+    delete body.packages;
+    packages.forEach((v, i) => {
+      body['packages[' + i + ']'] = v;
+    });
     return await this._call("/shipping/pickup/request", {
       method: "POST",
       body: JSON.stringify(body),
     });
   }
-  async shippingTrackingGetInfo(o: { authToken: string; trackNumber: string }) {
+  async shippingTrackingGetInfo(o: { trackNumber: string }) {
     const body = { ...o };
-    return await this._call("/shipping/tracking/getInfo", { method: "GET" });
+    return await this._call("/shipping/tracking/getInfo", { method: "GET", body: JSON.stringify(body) });
   }
-  async shippingRefundGetInfo(o: { id: string; authToken: string }) {
-    const body = { ...o };
-    delete body.id;
+  async shippingRefundGetInfo(o: { id: string; }) {
     return await this._call("/shipping/refund/getInfo/" + o.id, {
       method: "GET",
     });
@@ -300,26 +287,38 @@ export class VIPParcel {
     limit: number;
     offset: number;
     orderBy: string[];
-    authToken: string;
   }) {
     const body = { ...o };
-    return await this._call("/shipping/refund/getLabels", { method: "GET" });
+    const orderBy = o.orderBy;
+    delete body.orderBy;
+    (orderBy || []).forEach((v, i) => {
+      body['orderBy[' + i + ']'] = v;
+    });
+    return await this._call("/shipping/refund/getLabels", { method: "GET", body: JSON.stringify(body) });
   }
   async shippingRefundGetList(o: {
     limit: number;
     offset: number;
     orderBy: string[];
-    authToken: string;
   }) {
     const body = { ...o };
-    return await this._call("/shipping/refund/getList", { method: "GET" });
+    const orderBy = o.orderBy;
+    delete body.orderBy;
+    (orderBy || []).forEach((v, i) => {
+      body['orderBy[' + i + ']'] = v;
+    });
+    return await this._call("/shipping/refund/getList", { method: "GET", body: JSON.stringify(body) });
   }
   async shippingRefundRequest(o: {
-    authToken: string;
     refundLabels: string[];
     reason: string;
   }) {
     const body = { ...o };
+    const refundLabels = o.refundLabels;
+    delete body.refundLabels;
+    (refundLabels || []).forEach((v, i) => {
+      body['refundLabels[' + i + ']'] = v;
+    });
     return await this._call("/shipping/refund/request", {
       method: "POST",
       body: JSON.stringify(body),

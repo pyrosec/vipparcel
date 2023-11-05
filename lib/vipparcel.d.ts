@@ -178,7 +178,6 @@ export declare class VIPParcel {
         limit: number;
         offset: number;
         orderBy: string[];
-        authToken: string;
     }): Promise<any>;
     accountBalanceGetCurrent(o: any): Promise<any>;
     accountAddressGetInfo(o: {

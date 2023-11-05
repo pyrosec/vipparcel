@@ -51,7 +51,7 @@ export class VIPParcel {
       delete config.body;
     } else {
       body.authToken = this.authToken;
-      config.body = qs.stringify(body).replace(/(?:=(?:false|true))/g, '');
+      config.body = qs.stringify(body).replace(/([a-zA-Z]+)=true/g, '$1').replace(/[a-zA-Z]+=false/, '');
       config.headers = config.headers || {};
       config.headers["content-type"] = "application/x-www-form-urlencoded";
     }

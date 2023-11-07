@@ -240,7 +240,7 @@ export class VIPParcel {
       "sender[streetAddress]": o.senderStreetAddress,
       "sender[city]": o.senderCity,
       "sender[firstName]": o.senderFirstName,
-      "sender[lastName][0]": o.senderLastName,
+      "sender[lastName]": o.senderLastName,
       "sender[phone]": o.senderPhone,
       "sender[postalCode]": o.senderPostalCode,
       "sender[state]": o.senderState,
@@ -274,11 +274,6 @@ export class VIPParcel {
     return await this._call("/shipping/label/print", {
       method: "POST",
       body: JSON.stringify(body),
-    });
-  }
-  async shippingPickupGetInfo(o: { id: string }) {
-    return await this._call("/shipping/pickup/getInfo/" + o.id, {
-      method: "GET",
     });
   }
   async shippingPickupGetLabels(o: {

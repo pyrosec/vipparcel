@@ -114,9 +114,6 @@ export declare class VIPParcel {
         validationAddress: boolean;
         reference: string;
     }): Promise<any>;
-    shippingPickupGetInfo(o: {
-        id: string;
-    }): Promise<any>;
     shippingPickupGetLabels(o: {
         limit: number;
         offset: number;
